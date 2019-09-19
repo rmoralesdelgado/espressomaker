@@ -1,6 +1,6 @@
 ## Release History
 
-### v0.1.a1
+### v0.1a1
 
 Basic skeleton of the package ready for shipping to TestPyPI.
 
