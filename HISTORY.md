@@ -1,5 +1,5 @@
 
-## Release History
+<h2>Release History</h2>
 
 ### v0.1a1
 
@@ -14,6 +14,13 @@ Basic skeleton of the package ready for shipping to TestPyPI.
 * Added debugging tracers for all private methods.
 * Finished class- and static- methods docstrings.
 * Updated setup.py.
+
+### v0.1b1
+
+* Improved HISTORY.md title formatting.
+* Updated "classifiers" of setup.py.
+* Changed opentabs() classmethod to check() in espresso.py.
+* Successfully ran manual tests in all APIs.
 
 ### TODO
 
