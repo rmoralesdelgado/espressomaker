@@ -22,6 +22,7 @@ setuptools.setup(
         "Natural Language :: English",
         "Operating System :: MacOS :: MacOS X",
         "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
     ],
     python_requires='>=3.5',
 )
