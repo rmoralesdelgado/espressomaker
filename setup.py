@@ -7,8 +7,8 @@ with open("HISTORY.md", "r") as fh:
     history = fh.read()
 
 setuptools.setup(
-    name="espressomaker-rmoralesdelgado",
-    version="0.1a2",
+    name="espressomaker",
+    version="0.1b1",
     author="Raul Morales Delgado",
     author_email="rmoralesdelgado@gmail.com",
     description="Allows to temporarily modify the power management settings on a MacOS to run processes uninterruptedly.",
