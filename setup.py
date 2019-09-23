@@ -8,11 +8,11 @@ with open("HISTORY.md", "r") as fh:
 
 setuptools.setup(
     name="espressomaker-rmoralesdelgado",
-    version="0.1a1",
+    version="0.1a2",
     author="Raul Morales Delgado",
     author_email="rmoralesdelgado@gmail.com",
     description="Allows to temporarily modify the power management settings on a MacOS to run processes uninterruptedly.",
-    long_description=long_description + '\n\n' + history,
+    long_description=long_description + history,
     long_description_content_type="text/markdown",
     url="https://github.com/rmoralesdelgado/espressomaker",
     packages=setuptools.find_packages(),
