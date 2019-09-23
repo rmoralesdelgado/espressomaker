@@ -193,15 +193,15 @@ class Espresso:
             self._opentab(_display_on = display_on)
             if self.verbose == True:
                 print('[espressomaker] Started on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), display_on))
-                print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
-                print('[espressomaker _shot debug]', 'self._display_on =', self._display_on, 'display_on =', display_on) # For debugging
+#                 print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
+#                 print('[espressomaker _shot debug]', 'self._display_on =', self._display_on, 'display_on =', display_on) # For debugging
             yield
             
         finally:
             self._closetab()
             if self.verbose == True:
                 print('\n[espressomaker] Finished on {}.'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S")))
-                print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
+#                 print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
     
     
     # Class-method to run "_opentab()" via "Espresso.opentab()":
@@ -291,9 +291,9 @@ class Espresso:
     
     
     @classmethod
-    def opentabs(cls):
+    def check(cls):
         """
-        (classmethod) espressomaker.Espresso.opentabs()
+        (classmethod) espressomaker.Espresso.check()
         
         Provides the user a list of all running "caffeinate" processes and indicates the one
         corresponding to this kernel (if any).
