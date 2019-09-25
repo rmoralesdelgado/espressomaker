@@ -69,7 +69,11 @@ while True:
 class Espresso:
     
     # Setting default "verbose" mode:
-    verbose = True
+    _verbose_set = True
+    
+    
+    # Setting default "display_on" mode:
+    _display_on_set = False
     
     
     # Creating a temporal pid variable
@@ -82,30 +86,67 @@ class Espresso:
         self.ppid = os.getppid()
     
     
-    # Method to run "caffeinate":
-    def _opentab(self, _display_on, pid = None):
+    # Class-method to modify and retrive Espresso settings:
+    @classmethod
+    def config(cls, verbose = None, display_on = None):
         """
-        (private method) espressomaker.Espresso()._opentab()
+        (classmethod) espressomaker.Espresso.config(verbose = Espreso.verbose, 
+        display_on = Espresso.display_on)
         
-        Method to manually open an espressomaker tab — a "caffeinate" subprocess — on this kernel.
+        Method to modify and return the Espresso class settings.
+        
+        Inputs:
+            verbose = Bool. Default state is None, which means default is the Espresso.config() setting.
+            display_on = Bool. Default state is None, which means default is the Espresso.config() setting.
+        
+        Returns:
+            Str. Contains Espresso class-level settings.
+        
+        """
+        
+        # If-else to let user change "verbose" setting:
+        if verbose == None:
+            pass
+        else:
+            assert isinstance(verbose, bool), '"verbose" setting must be bool (True/False).'
+            cls._verbose_set = verbose
+            
+        # If-else to let user change "display_on" setting:
+        if display_on == None:
+            pass
+        else:
+            assert isinstance(display_on, bool), '"display_on" setting must be bool (True/False).'
+            cls._display_on_set = display_on
+        
+        return 'Espresso(verbose = {}, display_on = {})'.format(cls._verbose_set, cls._display_on_set)
+    
+    
+    # Method to run "caffeinate":
+    def _opentab(self, _display_on_opentab, pid = None):
+        """
+        (private method) espressomaker.Espresso()._opentab(_display_on_opentab, pid = None)
+        
+        Method to open an espressomaker tab — a "caffeinate" subprocess — on this kernel.
         
         Returns:
             Int. PID of the "caffeinate" subprocess as instance variable.
         """
-        self._display_on = _display_on
+        
         if pid == None:
             pid = self.pid
         else:
             pid = pid
-        if self._display_on == True:
+        
+        if _display_on_opentab == True:
             _caffeinate_on_cmd = split('caffeinate -dis -w ' + str(pid))
             self._caffeinate = subprocess.Popen(_caffeinate_on_cmd)
-        elif self._display_on == False:
+        elif _display_on_opentab == False:
             _caffeinate_on_cmd = split('caffeinate -is -w ' + str(pid))
             self._caffeinate = subprocess.Popen(_caffeinate_on_cmd)
+        
 #         print('[espressomaker _opentab debug]', _caffeinate_on_cmd) # For debugging
-#         print('[espressomaker _opentab debug]', 'pid =', pid, 'self.pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
-#         print('[espressomaker _opentab debug]', 'self._display_on =', self._display_on, '_display_on =', _display_on) # For debugging
+#         print('[espressomaker _opentab debug]', f'[self.pid = {self.pid}], [self.caffeinate pid = {self._caffeinate.pid}]') # For debugging
+#         print('[espressomaker _opentab debug]', f'[_display_on_opentab = {_display_on_opentab}], [self._display_on_set = {self._display_on_set}]') # For debugging
         return self._caffeinate.pid
     
     
@@ -182,33 +223,33 @@ class Espresso:
     
     # Method to open and kill "caffeinate" with a context manager:
     @contextmanager
-    def _shot(self, display_on):
+    def _shot(self, _display_on_shot):
         """
         (private method & context manager) espressomaker.Espresso()._shot()
         
         Private method that yields a context manager.
         
         """
+        
         try:
-            self._opentab(_display_on = display_on)
-            if self.verbose == True:
-                print('[espressomaker] Started on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), display_on))
-#                 print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
-#                 print('[espressomaker _shot debug]', 'self._display_on =', self._display_on, 'display_on =', display_on) # For debugging
+            self._opentab(_display_on_opentab = _display_on_shot)
+            
+            if self._verbose_set == True:
+                print('[espressomaker] Started on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), _display_on_shot))
+#                 print('[espressomaker _shot debug]', f'[self.pid = {self.pid}], [self.caffeinate pid = {self._caffeinate.pid}]') # For debugging
             yield
             
         finally:
             self._closetab()
-            if self.verbose == True:
+            if self._verbose_set == True:
                 print('\n[espressomaker] Finished on {}.'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S")))
-#                 print('[espressomaker _shot debug]', 'pid =', self.pid, '| caffeinate pid =', self._caffeinate.pid) # For debugging
     
     
     # Class-method to run "_opentab()" via "Espresso.opentab()":
     @classmethod
-    def opentab(cls, display_on = True):
+    def opentab(cls, display_on = None):
         """
-        (classmethod) espressomaker.Espresso.opentab()
+        (classmethod) espressomaker.Espresso.opentab(display_on = None)
         
         Opens a manual tab — starts a "caffeinate" subprocess — on this kernel's process id (pid).
         
@@ -216,17 +257,29 @@ class Espresso:
         
         To close the current tab, run "Espresso.closetab()".
         
+        Inputs:
+            display_on = Bool. Default state is None, which means default is Espresso.config() setting.
+        
         Returns:
             None.
         
         """
+        
+        # Retrieving status:
         status = cls()._status()
+        
+        # if-else to let user manually override "display_on" class-level setting:
+        if display_on == None:
+            cls.display_on = cls._display_on_set
+        else:
+            assert isinstance(display_on, bool), '"display_on" setting must be bool (True/False).'
+            cls.display_on = display_on
         
         if status[0] == 1:
             print('[espressomaker] There is a current tab opened. To close, run "Espresso.closetab()".')
         elif (status[0] == 0) or (status[0] == 2):
-            cls._temp_pid = cls()._opentab(_display_on = display_on)
-            print('[espressomaker] Espresso tab opened.')
+            cls._temp_pid = cls()._opentab(_display_on_opentab = cls.display_on)
+            print('[espressomaker] Espresso tab started on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), cls.display_on))
     
     
     # Class-method to run "_closetab()" via "Espresso.closetab()":
@@ -271,11 +324,14 @@ class Espresso:
     
     # Class-method to run context manager "_shot()" via "Espresso.shot()":
     @classmethod
-    def shot(cls, display_on = True):
+    def shot(cls, display_on = None):
         """
-        (classmethod & context manager) espressomaker.Espresso.shot()
+        (classmethod & context manager) espressomaker.Espresso.shot(display_on = None)
         
         Provides a context manager to run blocks of code without letting the system sleep.
+        
+        Inputs:
+            display_on = Bool. Default state is None, which means default is Espresso.config() setting.
         
         Yields:
             Context manager.
@@ -287,7 +343,15 @@ class Espresso:
         ...    function_2()
         
         """
-        return cls()._shot(display_on = display_on)
+        
+        # if-else to let user manually override "display_on" class-level setting:
+        if display_on == None:
+            cls.display_on = cls._display_on_set
+        else:
+            assert isinstance(display_on, bool), '"display_on" setting must be bool (True/False).'
+            cls.display_on = display_on
+        
+        return cls()._shot(_display_on_shot = cls.display_on)
     
     
     @classmethod
@@ -302,6 +366,7 @@ class Espresso:
             None.
         
         """
+        
         status = cls()._status()
         _p_list = subprocess.run(split('ps -A -o user,pid,command'), stdout = subprocess.PIPE).stdout.decode()
         _p_list = _p_list.split('\n')
@@ -309,7 +374,7 @@ class Espresso:
         if not any([ps_search.match(i) for i in _p_list]):
             print('[espressomaker] No "caffeinate" processes found.')
         else:
-            print('[espressomaker] The following open tabs were found:')
+            print('[espressomaker] The following "caffeinate" processes were found:')
             print(_p_list[0])
             for i in _p_list:
                 if ps_search.match(i):
@@ -330,6 +395,4 @@ class Espresso:
         subprocess.Popen(_killall_caffeinate_on_cmd)
 
 
-# start-formatting
-# end-formatting
 # Formatting passed and completed.
