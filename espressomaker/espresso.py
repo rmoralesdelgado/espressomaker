@@ -280,7 +280,7 @@ class Espresso:
             print('[espressomaker] There is a current tab opened. To close, run "Espresso.closetab()".')
         elif (status[0] == 0) or (status[0] == 2):
             cls._temp_pid = cls()._opentab(_display_on_opentab = cls.display_on)
-            print('[espressomaker] Espresso tab started on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), cls.display_on))
+            print('[espressomaker] Espresso tab opened on {} (display_on = {}).'.format(time.strftime("%a, %d/%b/%Y %H:%M:%S"), cls.display_on))
     
     
     # Class-method to run "_closetab()" via "Espresso.closetab()":
