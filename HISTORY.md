@@ -22,7 +22,17 @@ Basic skeleton of the package ready for shipping to TestPyPI.
 * Changed opentabs() classmethod to check() in espresso.py.
 * Successfully ran manual tests in all APIs.
 
+### v0.1b2
+
+* Added PyPI version and GitHub issues badges to README.md.
+* Ran installation test using `$ pip install espressomaker`.
+* Added config() classmethod to allow user modify Espresso class-level settings. Returns current settings.
+* Added parameters to shot() and opentab() to allow user override "display_on" class-level setting.
+* Repositioned status retrieval in closetab() classmethod.
+* Added return message for killall() staticmethod.
+* Added atexit.register call to closetab() (to be used when using opentab() in a .py script and not using closetab() at the end; however, killing the parent process should kill the "caffeinate" subprocess anyway).
+* Finished User Guide in README.md.
+
 ### TODO
 
-* Finished user-guide in README.md
 * Finish unittest.
