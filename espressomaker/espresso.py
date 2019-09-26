@@ -5,6 +5,7 @@
 
 
 # Standard library imports:
+import atexit
 from contextlib import contextmanager
 import os
 import platform
@@ -300,13 +301,14 @@ class Espresso:
         # a possible AttributeError (in case said variable was lost), and proceeds to look for the 
         # parent "pid" (the kernel's one) and then kills the "caffeine" corresponding to that kernel.
         
+        # Retrieving the _status():
+        status = cls()._status()
+        
         try:
             cls()._closetab(pid = cls._temp_pid)
             print('[espressomaker] Espresso tab closed.')
         
         except AttributeError:
-            
-            status = cls()._status()
             
             if status[0] == 0:
                 print('[espressomaker] No "caffeinate" processes related to this kernel (nor system) were found.')
@@ -315,6 +317,7 @@ class Espresso:
                 print('[espressomaker] Espresso tab closed.')
             elif status[0] == 2:
                 print('[espressomaker] No "caffeinate" processes related to this kernel were found but there are other\n"caffeinate" processes running on this machine. To kill all, run "Espresso.killall()".')
+        
         except:
             print('Unexpected error. If you still have any "caffeinate" processes open, run "Espresso.killall()".')
         
@@ -393,6 +396,11 @@ class Espresso:
         """
         _killall_caffeinate_on_cmd = split('killall caffeinate')
         subprocess.Popen(_killall_caffeinate_on_cmd)
+        return 'All "caffeinate" processes killed.'
+
+
+
+atexit.register(Espresso.closetab)
 
 
 # Formatting passed and completed.
