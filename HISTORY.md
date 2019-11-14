@@ -33,6 +33,9 @@ Basic skeleton of the package ready for shipping to TestPyPI.
 * Added atexit.register call to closetab() (to be used when using opentab() in a .py script and not using closetab() at the end; however, killing the parent process should kill the "caffeinate" subprocess anyway).
 * Finished User Guide in README.md.
 
+### v0.1rc1
+* Corrected numbering and hrefs on README.md to work correctly on GitHub.
+
 ### TODO
 
 * Finish unittest.
