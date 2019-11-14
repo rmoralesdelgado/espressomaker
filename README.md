@@ -1,4 +1,3 @@
-
 <p align="center">
     <a href="https://pypi.org/project/espressomaker/" alt="PyPI version">
         <img src="https://img.shields.io/pypi/v/espressomaker" /></a>
@@ -6,6 +5,8 @@
         <img src="https://img.shields.io/github/issues/rmoralesdelgado/espressomaker" /></a>
     <a href="https://github.com/rmoralesdelgado/espressomaker/blob/master/LICENSE" alt="License: MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+    <a href="https://github.com/psf/black" alt="Code style: black">
+        <img src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
 </p>
 
 # espressomaker
